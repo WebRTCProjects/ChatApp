@@ -7,9 +7,10 @@ body {
 
 .main-area {
   padding: 25px;
-  width: 40%;
+  width: max(40%, 350px);
   font-size: medium;
   background-color: #fff;
+  max-width: 582px;
 }
 
 .welcome-title {
@@ -35,12 +36,13 @@ body {
   font-weight: 200;
 }
 .second-input {
-  width: calc(80% - 30px);
-  // display: inline;
+  // width: calc(80% - 30px);
+  flex: 1 0 70%;
 }
 .send-button {
   background-color: #264611cc;
   color: white;
+  flex: 1 0 10%;
 }
 
 .messages {
@@ -56,8 +58,12 @@ body {
     display: none;
   }
   &--input {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-bottom: 20px;
-    margin-left: 10px;
+    margin-inline: 10px;
   }
 }
 
@@ -65,13 +71,30 @@ body {
   height: 30%;
   display: block;
 }
+.sender-name,
+.message-content {
+  margin-left: 45px;
+  display: block;
+}
+.sender-name {
+  font-weight: 700;
+  text-transform: capitalize;
+}
 
 .avatar {
-  width: 50px;
-  height: 50px;
-  padding: 20px;
-  font-size: 15px;
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  left: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  line-height: 42px;
+  color: #fff;
+  text-align: center;
   border-radius: 50%;
-  background-color: red;
-  margin-right: 10px;
+  font-style: normal;
+  text-transform: uppercase;
+  background-color: blue;
 }

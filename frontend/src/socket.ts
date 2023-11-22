@@ -79,31 +79,38 @@ export const enterToChat = (username: string) => {
 
 function onMessageRecieved(payload: any) {
   const message = JSON.parse(payload.body);
+  const sender = message.sender;
+  const content = message.content;
   if (message.type === 'JOIN') {
     let html = '<li class="row justify-center">';
-    html = html + message.sender + ' joined to chat!';
+    html = html + sender + ' joined to chat!';
     html += '</li>';
     store.addToContent(html);
   } else if (message.type === 'LEAVE') {
     let html = '<li class="row justify-center">';
-    html = html + message.sender + ' left chat!';
+    html = html + sender + ' left chat!';
     html += '</li>';
     store.addToContent(html);
   } else {
-    const sender = message.sender;
-    const content = message.content;
-    let html = '<li class="row justify-start">';
-    html =
-      html +
-      '<span class="avatar">A</span>' +
-      '<div>' +
-      '<p>' +
-      sender +
-      '</p>' +
-      '<p>' +
-      content +
-      '</p>' +
-      '</div>';
+    console.log('Sender is=> ', sender);
+    console.log('username is=> ', store.getUsername);
+
+    let html = '';
+    if (sender == store.getUsername)
+      html = '<li class="row justify-end"> <div>';
+    else {
+      html =
+        '<li class="row justify-start">' +
+        '<span class="avatar">' +
+        sender[0] +
+        '</span>' +
+        '<div>' +
+        '<span class="sender-name">' +
+        sender +
+        '</span>';
+    }
+
+    html += '<span class="message-content">' + content + '</span>' + '</div>';
     html += '</li>';
     store.addToContent(html);
   }

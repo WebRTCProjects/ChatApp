@@ -1,7 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <q-card class="main-area">
-      <div :class="[connected ? hide : display]">
+      <div>
         <p class="welcome-title">Welcome to my chat app</p>
         <q-form @submit.prevent="connectToChat">
           <div class="input-label">Username</div>
@@ -13,37 +13,6 @@
           </div>
         </q-form>
       </div>
-      <div :class="[connected ? display : hide]" class="messages">
-        <p class="title">Springboot and Vue3 Quasar Stomp-Websocket</p>
-        <q-separator />
-        <div class="messages--body">
-          <div id="scrollArea" class="messages--conversation-area">
-            <template v-for="message in store.getContent" :key="message">
-              <span v-html="message"></span>
-            </template>
-          </div>
-          <q-form
-            @submit.prevent="sendMessage"
-            class="messages--input row absolute-bottom"
-          >
-            <q-input
-              outlined
-              v-model="message"
-              class="second-input"
-              dense
-              @focus="message = message == placeholder ? '' : message"
-            ></q-input>
-            <q-btn
-              label="Send"
-              class="send-button q-ml-lg shadow-1"
-              icon-right="send"
-              no-caps
-              unelevated
-              @click="sendMessage"
-            />
-          </q-form>
-        </div>
-      </div>
     </q-card>
   </q-page>
 </template>
@@ -53,17 +22,13 @@ import { onMounted, ref } from 'vue';
 import { initSocket, enterToChat, send } from 'src/socket';
 import { useMessageStore } from 'src/stores/message-store';
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
 const store = useMessageStore();
-
-let placeholder = 'Type a message here ...';
-
 const username = ref('');
 const connected = ref(false);
-const display = ref('show');
-const hide = ref('hidden');
-const message = ref(placeholder);
 const $q = useQuasar();
+const router = useRouter();
 
 function connectToChat() {
   if (username.value == '') {
@@ -76,18 +41,7 @@ function connectToChat() {
   store.username = username.value;
   connected.value = enterToChat(username.value);
   username.value = '';
-}
-
-function sendMessage() {
-  if (message.value === placeholder) {
-    $q.notify({
-      message: 'Write something!',
-      color: 'negative',
-    });
-    return;
-  }
-  send(username.value, message.value);
-  message.value = '';
+  router.push('/chat');
 }
 
 onMounted(() => {

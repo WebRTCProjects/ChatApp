@@ -1,0 +1,100 @@
+.hidden {
+  display: none;
+}
+body {
+  background-color: #3363c93b;
+}
+
+.main-area {
+  padding: 25px;
+  width: max(40%, 350px);
+  font-size: medium;
+  background-color: #fff;
+  max-width: 582px;
+}
+
+.welcome-title {
+  font-size: 25px;
+  font-weight: 600;
+}
+.title {
+  font-size: 25px;
+}
+.enter-button {
+  margin-top: 20px;
+  background-color: #0d57f7;
+  color: #fff;
+}
+
+.input-label {
+  margin: 10px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.first-input {
+  font-size: 20px;
+  font-weight: 200;
+}
+.second-input {
+  // width: calc(80% - 30px);
+  flex: 1 0 70%;
+}
+.send-button {
+  background-color: #264611cc;
+  color: white;
+  flex: 1 0 10%;
+}
+
+.messages {
+  height: 700px;
+  width: 100%;
+  &--body {
+    height: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+  &--body::-webkit-scrollbar {
+    display: none;
+  }
+  &--input {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 20px;
+    margin-inline: 10px;
+  }
+}
+
+.all-messages {
+  height: 30%;
+  display: block;
+}
+.sender-name,
+.message-content {
+  margin-left: 45px;
+  display: block;
+}
+.sender-name {
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.avatar {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  left: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  line-height: 42px;
+  color: #fff;
+  text-align: center;
+  border-radius: 50%;
+  font-style: normal;
+  text-transform: uppercase;
+  background-color: blue;
+}
