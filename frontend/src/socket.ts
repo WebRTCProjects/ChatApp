@@ -2,11 +2,18 @@
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client/dist/sockjs';
 import { useMessageStore } from './stores/message-store';
+import { EventBus } from 'quasar';
 
 const store = useMessageStore();
 const URL = process.env.API + '/ws';
 
+export const bus = new EventBus();
+
 const header = {};
+const colors = [
+  '#2196F3', '#32c787', '#00BCD4', '#ff5652',
+  '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
+];
 
 let stompCLient: Stomp.client;
 
@@ -76,8 +83,17 @@ export const enterToChat = (username: string) => {
   }
   return connectionStatus;
 };
+function getAvatarColor(messageSender:string) {
+  let hash = 0;
+  for (let i = 0; i < messageSender.length; i++) {
+      hash = 31 * hash + messageSender.charCodeAt(i);
+  }
+  const index = Math.abs(hash % colors.length);
+  return colors[index];
+}
 
 function onMessageRecieved(payload: any) {
+
   const message = JSON.parse(payload.body);
   const sender = message.sender;
   const content = message.content;
@@ -86,6 +102,7 @@ function onMessageRecieved(payload: any) {
     html = html + sender + ' joined to chat!';
     html += '</li>';
     store.addToContent(html);
+    store.addUserNameColor(sender, getAvatarColor(sender))
   } else if (message.type === 'LEAVE') {
     let html = '<li class="row justify-center">';
     html = html + sender + ' left chat!';
@@ -101,7 +118,7 @@ function onMessageRecieved(payload: any) {
     else {
       html =
         '<li class="row justify-start">' +
-        '<span class="avatar">' +
+        `<span class="avatar" style="background-color:${store.getUserNameColor(sender)}">` +
         sender[0] +
         '</span>' +
         '<div>' +
@@ -114,4 +131,5 @@ function onMessageRecieved(payload: any) {
     html += '</li>';
     store.addToContent(html);
   }
+  bus.emit('scroll')
 }
