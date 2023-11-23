@@ -11,8 +11,14 @@ export const bus = new EventBus();
 
 const header = {};
 const colors = [
-  '#2196F3', '#32c787', '#00BCD4', '#ff5652',
-  '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
+  '#2196F3',
+  '#32c787',
+  '#00BCD4',
+  '#ff5652',
+  '#ffc107',
+  '#ff85af',
+  '#FF9800',
+  '#39bbb0',
 ];
 
 let stompCLient: Stomp.client;
@@ -83,17 +89,16 @@ export const enterToChat = (username: string) => {
   }
   return connectionStatus;
 };
-function getAvatarColor(messageSender:string) {
+function getAvatarColor(messageSender: string) {
   let hash = 0;
   for (let i = 0; i < messageSender.length; i++) {
-      hash = 31 * hash + messageSender.charCodeAt(i);
+    hash = 31 * hash + messageSender.charCodeAt(i);
   }
   const index = Math.abs(hash % colors.length);
   return colors[index];
 }
 
 function onMessageRecieved(payload: any) {
-
   const message = JSON.parse(payload.body);
   const sender = message.sender;
   const content = message.content;
@@ -102,7 +107,7 @@ function onMessageRecieved(payload: any) {
     html = html + sender + ' joined to chat!';
     html += '</li>';
     store.addToContent(html);
-    store.addUserNameColor(sender, getAvatarColor(sender))
+    store.addUserNameColor(sender, getAvatarColor(sender));
   } else if (message.type === 'LEAVE') {
     let html = '<li class="row justify-center">';
     html = html + sender + ' left chat!';
@@ -116,9 +121,10 @@ function onMessageRecieved(payload: any) {
     if (sender == store.getUsername)
       html = '<li class="row justify-end"> <div>';
     else {
+      const color = store.getUserNameColor(sender) ?? 'red';
       html =
         '<li class="row justify-start">' +
-        `<span class="avatar" style="background-color:${store.getUserNameColor(sender)}">` +
+        `<span class="avatar" style="background-color:${color}">` +
         sender[0] +
         '</span>' +
         '<div>' +
@@ -131,5 +137,5 @@ function onMessageRecieved(payload: any) {
     html += '</li>';
     store.addToContent(html);
   }
-  bus.emit('scroll')
+  bus.emit('scroll');
 }
